@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
-using Pepper.Integration.YahooFinance.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Pepper.Integration.YahooFinance.Controllers;

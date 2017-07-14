@@ -16,9 +16,12 @@ namespace Pepper.Integration.YahooFinance.Controllers
 
         public static void Fetch()
         {
+            Console.WriteLine("Getting Entity Details....");
             List<EquityRes> equity = GetSymbol();
             int i = 1;
             List<EquityRes> CurrentSymbols = new List<EquityRes>();
+            Console.WriteLine("Entity Count: ", equity.Count);
+            Console.WriteLine("Get and Parse Yahoo Finance Data ");
             foreach (EquityRes item in equity)
             {
                 CurrentSymbols.Add(item);
@@ -101,7 +104,7 @@ namespace Pepper.Integration.YahooFinance.Controllers
                     _BackgroundJob.Volume = GetDecimal(q.Element("Volume").Value);
                     _BackgroundJob.StockExchange = q.Element("StockExchange").Value;
                     _BackgroundJob.LastUpdatedDate = DateTime.Now;
-                    _BackgroundJob.LastUpdatedBy = Authentication.CurrentUser.UserID;
+                    _BackgroundJob.LastUpdatedBy = null;
                     IEnumerable<ErrorInfo> errorInfo = _BackgroundJob.Save();
                 }
                 catch (Exception e)
@@ -217,7 +220,7 @@ namespace Pepper.Integration.YahooFinance.Controllers
         {
             using (PepperContext context = new PepperContext())
             {
-                return context.BackgroundJobs.EntityFilter().FirstOrDefault(type => type.EntityID == Id && type.Symbol == Symbol);
+                return context.BackgroundJobs.FirstOrDefault(type => type.EntityID == Id && type.Symbol == Symbol);
             }
         }
 
@@ -229,7 +232,7 @@ namespace Pepper.Integration.YahooFinance.Controllers
             if (_BackgroundJob == null)
             {
                 _BackgroundJob = new BackgroundJob();
-                _BackgroundJob.CreatedBy = Authentication.CurrentUser.UserID;
+                _BackgroundJob.CreatedBy = null;
                 _BackgroundJob.CreatedDate = DateTime.Now;
             }
             return _BackgroundJob;
